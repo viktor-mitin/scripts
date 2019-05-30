@@ -1,12 +1,18 @@
 #!/bin/sh
 
 #This script flashes all the files for the RCAR SK
-#Input parameters: T32_DIR - trace32 installation directory
+#
+#Input parameters:
+#     T32_DIR - trace32 installation directory
+#     SCRIPT_TO_RUN - trace32 cmm script to run
+
 T32_DIR=/home/c/t32
+SCRIPT_TO_RUN="$T32_DIR"/10_LauterBach\(Trace32\)/sk-h3-flashall.cmm
+
 
 T32_BIN_DIR="$T32_DIR"/bin/pc_linux64
 
-STR=$(tail /var/log/kern.log | grep Lauterbach | tail -n 1 | cut -d ' ' -f 8)
+STR=$(cat /var/log/kern.log | grep Lauterbach | tail -n 1 | cut -d ' ' -f 8)
 if [ -z "$STR" ] ; then
     echo "Error: Lauterbach is not connected, exit."
     return 1
@@ -39,7 +45,12 @@ if [ $? -ne 0 ] ; then
     return 5
 fi
 
-./t32marm64-qt -s $T32_DIR/10_LauterBach\(Trace32\)/sk-h3-flashall.cmm &
+if [ ! -f "$SCRIPT_TO_RUN" ] ; then
+    echo "Error: cannot find cmm script to run, exit."
+    return 6
+fi
+
+./t32marm64-qt -s "$SCRIPT_TO_RUN" &
 
 #Close the t32 GUI window when flashing is done
 #Note: t32 ignores SIGTERM during flash operation
