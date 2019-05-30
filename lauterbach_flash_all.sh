@@ -44,7 +44,7 @@ fi
 #Close the t32 GUI window when flashing is done
 #Note: t32 ignores SIGTERM during flash operation
 while true ; do
-    pkill t32marm64 || break
     sleep 3
+    pkill t32marm64 || break
 done
 
