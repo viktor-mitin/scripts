@@ -12,7 +12,9 @@ SCRIPT_TO_RUN="$T32_DIR"/10_LauterBach\(Trace32\)/sk-h3-flashall.cmm
 
 T32_BIN_DIR="$T32_DIR"/bin/pc_linux64
 
-STR=$(cat /var/log/kern.log | grep Lauterbach | tail -n 1 | cut -d ' ' -f 8)
+# string example:
+#Jun  4 14:27:18 3489 kernel: [13632.593589] usb 2-5: Product: Lauterbach PowerDebug Pro
+STR=$(cat /var/log/kern.log | grep Lauterbach | tail -n 1 | cut -d ' ' -f 9)
 if [ -z "$STR" ] ; then
     echo "Error: Lauterbach is not connected, exit."
     return 1
